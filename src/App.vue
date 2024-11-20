@@ -1,22 +1,38 @@
 <script>
-import AppHeader from './components/Header/AppHeader.vue';
-import AppMain from './components/Main/AppMain.vue';
-import AppFooter from './components/Footer/AppFooter.vue';
 
+import axios from 'axios';
+  
 export default {
-		name: 'App',
-  		components : {
-			AppHeader,
-			AppMain,
-			AppFooter
-  	}
-  }
+  data() {
+    return {
+      apiUrl: 'http://127.0.0.1:8000/api/posts',  
+      postslist: [],  
+    };
+  },
+  created() {
+    
+    axios
+      .get(this.apiUrl)
+      .then((response) => {
+       
+        console.log(response);
+        this.postslist = response.data.data;  
+      })
+      .catch((error) => {
+       
+        console.log(error);
+      })
+  },
+};
 </script>
 
 <template>
-  <AppHeader></AppHeader>
-  <AppMain></AppMain>
-  <AppFooter></AppFooter>
+  <div>
+	  <h1>Post</h1>
+	  <ul>
+		<li v-for="post in posts" :key="post.id">{{ post.title }}</li>
+	  </ul>
+	</div>
 </template>
 
 
@@ -30,3 +46,7 @@ export default {
 	}
 
 </style>
+
+
+
+
